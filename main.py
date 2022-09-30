@@ -114,31 +114,31 @@ def incsearch(func, xmin, xmax, ns):
     return nb, xb
 
 
-x = np.linspace(-50, 50, 100)
+x = np.linspace(-1, 0, 20)
 fp = (-12) - 21*x + 18*(x**2) - 2.75*(x**3)
 plt.title("m graph")
 plt.plot(x, fp)
 plt.grid(color = 'b', linestyle = "--", linewidth = 1)
 plt.show()
 
+print("=========================")
 
-
-"""
-print("[!] 2. Bisection\n")
-fm = lambda m: np.sqrt(9.81 * m / 0.25) * np.tanh(np.sqrt(9.81 * 0.25 / m) * 4) - 36
-root, fx, ea, iter = bisect(fm, 40, 200, 0.001, 50)
+print("[!] 2. Bisection")
+fx = lambda x: (-12) - 21*x + 18*(x**2) - 2.75*(x**3)
+root, fx, ea, iter = false_position(fx, -1, 0)
 print("[+] root:", root)
 print("[+] f(root):", fx, "(Must Be Zero)")
 print("[+] Estimated Error:", ea, "(Must Be Zero Error)")
 print("[+] Iterated Number to Find Root:", iter)
 
 print("=========================")
-print("[!] 3. false_position\n")
-fm2 = lambda n: pow(n, 10) - 1
-root2, fx2, ea2, iter2 = false_position(fm2, 0, 1.3, 0.35, 100)
-print("[+] root:", root2)
-print("[+] f(root):", fx2, "(Must Be Zero)")
+
+print("[!] 3. false_position")
+fx2 = lambda x: (-12) - 21*x + 18*(x**2) - 2.75*(x**3)
+root2, fx2, ea2, iter2 = false_position(fx2, -1, 0)
+print("[+] root2:", root2)
+print("[+] f(root2):", fx2, "(Must Be Zero)")
 print("[+] Estimated Error:", ea2, "(Must Be Zero Error)")
 print("[+] Iterated Number to Find Root:", iter2)
-"""
+
 
