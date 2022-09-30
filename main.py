@@ -92,13 +92,36 @@ def false_position(func, xl, xu, es = 1.0e-4, maxit = 100):
 
     return root, fx, ea, iter
 
-print("[!] 5.1) 번지점프, 이분법, 근사 상대오차가 2%이하로")
-fc = lambda c: np.sqrt((9.81*80) / c) * np.tanh(np.sqrt(9.81 * c / 80) * 4) - 36
-root, fx, ea, iter = bisect(fc, 0.1, 0.2)
-print("[+] root:", root)
-print("[+] f(root):", fx, "(Must Be Zero)")
-print("[+] Estimated Error:", ea, "(Must Be Zero Error)")
-print("[+] Iterated Number to Find Root:", iter)
+def incsearch(func, xmin, xmax, ns):
+    # x 범위 설정
+    x = np.linspace(xmin, xmax, ns)
+    # 주어진 함수 실행 배열 세팅
+    f = func(x)
+    # 구간값의 개수
+    nb = 0
+    # 구간값을 보관할 배열
+    xb = []
+    # 0부터 설정한 최고값까지 반복
+    for k in np.arange(np.size(x) - 1):
+        # f(x), f(x+1) 부호 다르면
+        if np.sign(f[k]) != np.sign(f[k+1]):
+            # 개수 추가
+            nb += 1
+            # 여기부터 여기까지
+            xb.append(x[k])
+            xb.append(x[k+1])
+    # 구간 개수, 구간 배열
+    return nb, xb
+
+
+x = np.linspace(-50, 50, 100)
+fp = (-12) - 21*x + 18*(x**2) - 2.75*(x**3)
+plt.title("m graph")
+plt.plot(x, fp)
+plt.grid(color = 'b', linestyle = "--", linewidth = 1)
+plt.show()
+
+
 
 """
 print("[!] 2. Bisection\n")
