@@ -50,6 +50,39 @@ def bisect(func, xl, xu, es = 2, maxit = 100):
 
     return root, fx, ea, iter
 
+def bisect_2(func, xl, xu, es = 0.0001, maxit = 100):
+
+    test = func(xl) * func(xu)
+
+    if test > 0:
+        print("No sign change")
+        return [], [], [], []
+
+    xr = xl
+    n = round(np.log2((xu - xl)/es) + 0.5)
+    ea = 100
+
+    for i in range(n):
+        xroid = xr
+        xr = (xl + xu)/2
+        if xr != 0:
+            ea = abs((xr - xroid)/xr) * 100
+
+        ea = abs(xr - xroid)
+
+        test = func(xl) * func(xr)
+        if (test < 0):
+            xu = xr
+        elif test > 0:
+            xl = xr
+        else:
+            ea = 0
+
+    root = xr
+    fx = func(xr)
+
+    return root, fx, ea, n
+
 def false_position(func, xl, xu, es = 1.0e-4, maxit = 100):
     # f(최저값)과 x(최고값)을 곱함
     test = func(xl) * func(xu)
@@ -114,6 +147,14 @@ def incsearch(func, xmin, xmax, ns):
     return nb, xb
 
 
+
+
+
+
+
+
+
+
 x = np.linspace(-1, 0, 20)
 fp = (-12) - 21*x + 18*(x**2) - 2.75*(x**3)
 plt.title("m graph")
@@ -141,4 +182,13 @@ print("[+] f(root2):", fx2, "(Must Be Zero)")
 print("[+] Estimated Error:", ea2, "(Must Be Zero Error)")
 print("[+] Iterated Number to Find Root:", iter2)
 
+print("=========================")
+
+print("[!] 4. Bisection_2")
+fc3 = lambda c: np.sqrt((9.81*80) / c) * np.tanh(np.sqrt(9.81 * c / 80) * 4) - 36
+root3, fc3, ea3, iter3 = bisect_2(fc3, 0.1, 0.2, 0.0001, 100)
+print("[+] root3:", root3)
+print("[+] f(root3):", fc3, "(Must Be Zero)")
+print("[+] Estimated Error:", ea3, "(Must Be Zero Error)")
+print("[+] Iterated Number to Find Root:", iter3)
 
