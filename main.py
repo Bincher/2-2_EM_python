@@ -60,7 +60,6 @@ def bisect_2(func, xl, xu, es = 0.0001, maxit = 100):
 
     xr = xl
     n = round(np.log2((xu - xl)/es) + 0.5)
-    ea = 100
 
     for i in range(n):
         xroid = xr
@@ -186,9 +185,9 @@ print("=========================")
 
 print("[!] 4. Bisection_2")
 fc3 = lambda c: np.sqrt((9.81*80) / c) * np.tanh(np.sqrt(9.81 * c / 80) * 4) - 36
-root3, fc3, ea3, iter3 = bisect_2(fc3, 0.1, 0.2, 0.0001, 100)
+root3, fc3, ea3, n = bisect_2(fc3, 0.1, 0.2, 0.0001, 100)
 print("[+] root3:", root3)
 print("[+] f(root3):", fc3, "(Must Be Zero)")
 print("[+] Estimated Error:", ea3, "(Must Be Zero Error)")
-print("[+] Iterated Number to Find Root:", iter3)
+print("[+] n:", n)
 
