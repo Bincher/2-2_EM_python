@@ -1,37 +1,32 @@
 import numpy as np
 
-K = np.array([[150, -100, 0], [-100, 150, -50], [0, -50, 50]]) #연립방정식의 행렬
-mg = np.array([588.6, 686.7, 784.8]) #우변 벡터
+def gauss_naive(A, b):
 
-x1 = np.linalg.inv(K) * mg #K의 역행렬 * mg
-print("\nk의 역행렬 * mg = \n",x1)
+    n = len(A)
+    if b.size != n:
+        raise ValueError("Matrix A must be square", b.size, n)
 
-x2 = np.dot(np.linalg.inv(K), mg) #K의 역행렬과 mg의 행렬곱
-print("\nK의 역행렬과 mg의 행렬곱 = \n",x2)
+    for pivot_row in range(n-1):
+        for row in range(pivot_row + 1, n):
+            factor = A[row][pivot_row]/A[pivot_row][pivot_row]
 
-x = np.linalg.inv(K) #K의 역행렬
-print("\nK의 역행렬 = \n",x)
+            A[row][pivot_row] = factor
+            for col in range(pivot_row + 1, n):
+                A[row][col] = A[row][col] - factor * A[pivot_row][col]
 
-xi = np.array([20, 40, 60])
-xf = x + xi #K의 역행렬 + [20, 40, 60]
-print("\nK의 역행렬 + [20, 40, 60] = \n",xf)
+            b[row] = b[row] - factor * b[pivot_row]
 
-"""
-k의 역행렬 * mg = 
- [[11.772 13.734 15.696]
- [11.772 20.601 23.544]
- [11.772 20.601 39.24 ]]
+    x = np.zeros(n)
+    k = n-1
+    x[k-1] = A[k-1][k] / A[k-1][k-1]
 
-K의 역행렬과 mg의 행렬곱 = 
- [41.202 55.917 71.613]
+    for i in range(k, -1, -1):
+        x[i] = (b[i] - np.dot(A[i, i+1:],x[i+1:]))/A[i,i]
 
-K의 역행렬 = 
- [[0.02 0.02 0.02]
- [0.02 0.03 0.03]
- [0.02 0.03 0.05]]
+    return x
 
-K의 역행렬 + [20, 40, 60] = 
- [[20.02 40.02 60.02]
- [20.02 40.03 60.03]
- [20.02 40.03 60.05]]
-"""
+A = np.array([[3, -0.1, -0.2], [0.1, 7, -0.3],[0.3, -0.2, 10]])
+b = np.array([[7.85], [-19.3], [71.4]])
+
+x = gauss_naive(A,b)
+print(x)
