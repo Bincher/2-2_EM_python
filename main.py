@@ -4,7 +4,7 @@ def gauss_naive(A, b):
 
     n = len(A)
     if b.size != n:
-        raise ValueError("Matrix A must be square", b.size, n)
+        raise ValueError("Matrix A must be square ", b.size, n)
 
     for pivot_row in range(n-1):
         for row in range(pivot_row + 1, n):
