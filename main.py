@@ -1,24 +1,64 @@
 import numpy as np
-from scipy.linalg import lu
-from numpy.linalg import inv, cholesky
+from numpy import linalg as LA
 
-A = np.array([[6, 15, 55],[15, 55, 225], [55, 225, 979]])
-b = np.array([[np.sum(A[0])], [np.sum(A[1])], [np.sum(A[2])]])
+a = np.array([[1, 0, -1], [0, 1, 0], [1, 0, 1]])
+b = np.array([[1,1/2,1/3],[1,2/3,1/2],[1,3/4,3/5]])
 
-print("np.array([[np.sum(A[0])], [np.sum(A[1])], [np.sum(A[2])]])")
+"""
+print("a")
+print(a)
+
+# 스펙트랄(p=2) 놈에 근거한 조건수
+print("\nLA.cond(a)")
+print(LA.cond(a))
+
+print("\nLA.cond(a, 'fro')")
+print(LA.cond(a, 'fro'))
+
+#행렬의 행-합 놈
+print("\nLA.cond(a, np.inf)")
+print(LA.cond(a, np.inf))
+
+print("\nLA.cond(a, -np.inf)")
+print(LA.cond(a, -np.inf))
+
+print("\nLA.cond(a, 1)")
+print(LA.cond(a, 1))
+
+print("\nLA.cond(a, -1)")
+print(LA.cond(a, -1))
+
+print("\nLA.cond(a, 2)")
+print(LA.cond(a, 2))
+
+print("\nLA.cond(a, -2)")
+print(LA.cond(a, -2))
+
+print("\nmin(LA.svd(a, compute_uv=False))*min(LA.svd(LA.inv(a), compute_uv=False))")
+print(min(LA.svd(a, compute_uv=False))*min(LA.svd(LA.inv(a), compute_uv=False)))
+"""
+
+print("b")
 print(b)
 
-U = cholesky(A)
-print("cholesky(A) -> U.T")
-print(U.T)
+# 스펙트랄(p=2) 놈에 근거한 조건수
+print("\nLA.cond(b)")
+print(LA.cond(b))
 
-print("np.dot(U, U.T)")
-print(np.dot(U, U.T))
+# 행렬의 행-합 놈
+print("\nLA.norm(b, np.inf)")
+print(LA.norm(b, np.inf))
 
-d = np.dot(inv(U),b)
-print("np.dot(inv(U,b))")
-print(d)
+# 역행렬의 햅-합 놈
+print("\nLA.norm(LA.inv(b), np.inf)")
+print(LA.norm(LA.inv(b), np.inf))
 
-x = np.dot(inv(U.T), d)
-print("np.dot(inv(U.T), d)")
-print(x);
+# 행-합 놈으로 구한 조건수
+print("\nLA.cond(b, np.inf)")
+print(LA.cond(b, np.inf))
+
+t1 = LA.norm(b, np.inf)
+t2 = LA.norm(LA.inv(b), np.inf)
+
+print("\nLA.norm(LA.inv(b), np.inf) * LA.norm(b, np.inf)")
+print(t1*t2)
