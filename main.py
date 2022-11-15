@@ -1,122 +1,43 @@
 import numpy as np
 from numpy import linalg as LA
 
-"""
-A = np.array([[10.0, 2.0, -1.0], [-3.0, -6.0, 2.0], [1.0, 1.0, 5.0]])
-b = np.array([[27.0],[-61.5],[-21.5]])
+def gaussSeidel(A, b, x, N, tol):
+    maxIterations = 1000000
+    xprev = [0.0 for i in range(N)]
+    for i in range(maxIterations):
+        for j in range(N):
+            xprev[j] = x[j]
+        for j in range(N):
+            summ = 0.0
+            for k in range(N):
+                if (k != j):
+                    summ = summ + A[j][k] * x[k]
+            x[j] = (b[j] - summ) / A[j][j]
+        diff1norm = 0.0
+        oldnorm = 0.0
+        for j in range(N):
+            diff1norm = diff1norm + abs(x[j] - xprev[j])
+            oldnorm = oldnorm + abs(xprev[j])
+        if oldnorm == 0.0:
+            oldnorm = 1.0
+        norm = diff1norm / oldnorm
+        if (norm < tol) and i != 0:
+            print("Sequence converges to [", end="")
+            for j in range(N - 1):
+                print(x[j], ",", end="")
+            print(x[N - 1], "]. Took", i + 1, "iterations.")
+            return
+    print("Doesn't converge.")
 
-print("a")
-print(a)
-# 스펙트랄(p=2) 놈에 근거한 조건수
-print("\nLA.cond(a)")
-print(LA.cond(a))
-print("\nLA.cond(a, 'fro')")
-print(LA.cond(a, 'fro'))
-#행렬의 행-합 놈
-print("\nLA.cond(a, np.inf)")
-print(LA.cond(a, np.inf))
-print("\nLA.cond(a, -np.inf)")
-print(LA.cond(a, -np.inf))
-print("\nLA.cond(a, 1)")
-print(LA.cond(a, 1))
-print("\nLA.cond(a, -1)")
-print(LA.cond(a, -1))
-print("\nLA.cond(a, 2)")
-print(LA.cond(a, 2))
-print("\nLA.cond(a, -2)")
-print(LA.cond(a, -2))
-print("\nmin(LA.svd(a, compute_uv=False))*min(LA.svd(LA.inv(a), compute_uv=False))")
-print(min(LA.svd(a, compute_uv=False))*min(LA.svd(LA.inv(a), compute_uv=False)))
-"""
+matrix2 = [[3.0, 1.0], [2.0, 6.0]]
+vector2 = [5.0, 9.0]
+guess = [0.0, 0.0]
 
-"""
-A = np.array([[10.0, 2.0, -1.0], [-3.0, -6.0, 2.0], [1.0, 1.0, 5.0]])
-b = np.array([[27.0],[-61.5],[-21.5]])
+matrix3 = [[9.0, -3.0], [-2.0, 8.0]]
+vector3 = [6.0, -4.0]
 
-Ad = LA.linalg.inv(A)
-print("역행렬")
-print(Ad)
-print("[A][A]^-1")
-print(LA.linalg.dot(A,Ad))
-"""
+matrix4 = [[1.0, -3.0], [-2.0, 8.0]]
 
-"""
-A = np.array([[-8.0, 1.0, -2.0], [-2.0, -6.0, -1.0], [-3.0, -1.0, 7.0]])
-b = np.array([[-20.0],[-38.0],[-34.0]])
-
-Ad = LA.linalg.inv(A)
-print("역행렬")
-print(Ad)
-"""
-
-"""
-a = np.array([[8.0, 2.0, -10.0], [-9.0, 1.0, 3.0], [15.0, -1.0, 6.0]])
-b = np.array([[8.0/-10.0, 2.0/-10.0, -10.0/-10.0], [-9.0/-9.0, 1.0/-9.0, 3.0/-9.0], [15.0/15.0, -1.0/15.0, 6.0/15.0]])
-
-print("a")
-print(a)
-
-print("b")
-print(b)
-
-print("Af")
-print(LA.norm(b,'fro'))
-
-print("At")
-print(LA.norm(b, 1))
-
-print("Ainf")
-print(LA.norm(b, np.inf))
-
-# 스펙트랄(p=2) 놈에 근거한 조건수
-print("\nLA.cond(b) 스펙트랄(p=2) 놈에 근거한 조건수")
-print(LA.cond(b))
-
-# 행렬의 행-합 놈
-print("\nLA.norm(b, np.inf) 행렬의 행-합 놈")
-print(LA.norm(b, np.inf))
-
-# 역행렬의 햅-합 놈
-print("\nLA.norm(LA.inv(b), np.inf) 역행렬의 햅-합 놈")
-print(LA.norm(LA.inv(b), np.inf))
-
-# 행-합 놈으로 구한 조건수
-print("\nLA.cond(b, np.inf) 행-합 놈으로 구한 조건수")
-print(LA.cond(b, np.inf))
-
-t1 = LA.norm(b, np.inf)
-t2 = LA.norm(LA.inv(b), np.inf)
-
-print("\nLA.norm(LA.inv(b), np.inf) * LA.norm(b, np.inf)")
-print(t1*t2)
-"""
-
-"""
-A = np.array([[-8.0, 1.0, -2.0], [-2.0, -6.0, -1.0], [-3.0, -1.0, 7.0]])
-B = np.array([[15.0, -3.0, -1.0], [-3.0, 18.0, -6.0], [-4.0, -1.0, 12.0]])
-
-print("Af")
-print(LA.norm(A,'fro'))
-
-print("Ainf")
-print(LA.norm(A, np.inf))
-
-print("Bf")
-print(LA.norm(B,'fro'))
-
-print("Binf")
-print(LA.norm(B, np.inf))
-"""
-
-x1 = 4.0
-x2 = 2.0
-x3 = 7.0
-A = np.array([[x1**2, x1, 1.0], [x2**2, x2, 1.0], [x3**2, x3, 1.0]])
-
-print("행-합 놈에 근거한 조건수 계산")
-print(LA.cond(A, np.inf))
-
-print("\n스펙트랄 놈에 근거한 조건수")
-print(LA.cond(A))
-print("LA.cond(A, 'fro')")
-print(LA.cond(A,'fro'))
+gaussSeidel(matrix2, vector2, guess, 2, 0.00000000000001)
+gaussSeidel(matrix3, vector3, guess, 2, 0.00000000000001)
+gaussSeidel(matrix4, vector3, guess, 2, 0.00000000000001)
