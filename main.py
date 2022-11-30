@@ -1,44 +1,46 @@
-from scipy.interpolate import lagrange
-from numpy.polynomial.polynomial import Polynomial
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
 
-def Newint(x, y, xx):
-    n = len(x)
-    if (len(y) != n):
-        print("ERROR : x and y must be same length")
-        return
-    b = np.zeros((n,n))
-    b[:,1] = y[:]
-    for j in range(2,n):
-        for i in range(1, n-j+1):
-            b[i,j] = (b[i+1, j-1]-b[i,j-1])/x[i+j-1]-x[i]
-    xt = 1
-    yint = b[1,1]
-    for j in range(1, n-1):
-        xt = xt * (xx-x[j])
-        yint = yint + b[1,j+1]*xt
-    return yint
-def Lagrange(x, y, xx):
-    n = len(x)
-    if (len(y) != n):
-        print("ERROR : x and y must be same length")
-        return
-    s = 0
-    for i in range(1,n):
-        product = y[i]
-        for j in range(1,n):
-            if (i != j):
-                product = product * (xx - x[j]) / (x[i] - x[j])
-        s = s + product
-    return s
+#외삽법의 위험성
+"""
+t = np.array([i for i in range(1920,1991,10)])
+print("x축(year) : ", t)
 
-x = np.array([1.0,4.0,6.0,5.0])
-y = np.log(x)
-print(Newint(x,y,2))
+pop = np.array([106.46, 123.08, 132.12, 152.27, 180.67, 205.05, 227.23, 249.46])
+p = np.polyfit(t, pop, 7)
 
-T = np.array([-40.0, 0.0, 20.0, 50.0])
-d = np.array([1.52, 1.29, 1.2, 1.09])
-density = Lagrange(T, d, 15)
+ts = (t-1955)/35
+print(ts)
 
-print(density)
+p = np.polyfit(ts,pop,7)
+print(p)
+
+q = np.polyval(p,(2000-1955)/35)
+print(q)
+
+tt = np.linspace(1920, 2000)
+pp = np.polyval(p, (tt-1955)/35)
+plt.plot(t, pop, 'o', tt, pp)
+plt.show()
+"""
+
+#고차 다항식보간법의 위험성
+"""
+x = np.linspace(-1, 1, 5)
+y = 1. / (1 + 25*x**2)
+xx = np.linspace(-1,1)
+
+p = np.polyfit(x, y, 4)
+y4 = np.polyval(p, xx)
+
+yr = 1. / (1 + 25*xx**2)
+plt.plot(x, y, 'o', xx, y4, xx, yr, '--')
+plt.show()
+
+x = np.linspace(-1, 1, 11)
+y = 1 / (1+25*x**2)
+p = np.polyfit(x,y,10)
+y10 = np.polyval(p, xx)
+plt.plot(x, y, 'o', xx, y10, xx, yr, '--')
+plt.show()
+"""
